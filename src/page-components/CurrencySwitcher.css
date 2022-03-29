@@ -1,0 +1,21 @@
+.currency-switcher {
+  position: fixed;
+  right: 45px;
+  top: 78px;
+  width: 114px;
+  background-color: #fff;
+  z-index: 2;
+}
+
+.currency-switcher h3 {
+  font-weight: 500;
+  font-size: 18px;
+  padding: 5px 0 5px 20px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 5px 0;
+}
+
+.currency-switcher h3:hover {
+  padding-left: 30px;
+}

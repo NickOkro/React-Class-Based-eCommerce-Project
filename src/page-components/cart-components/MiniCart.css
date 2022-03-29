@@ -1,0 +1,85 @@
+.mini-cart {
+  position: fixed;
+  right: 10px;
+  top: 78px;
+  width: 325px;
+  max-height: 540px;
+  background-color: #fff;
+  padding: 20px;
+  z-index: 2;
+}
+
+.mini-cart-items {
+  max-height: 340px;
+  overflow: scroll;
+}
+
+.mini-cart .cart-title {
+  margin-bottom: 23px;
+}
+
+.cart-title span {
+  font-weight: 300;
+}
+
+.mini-cart .item .bold {
+  font-weight: 300;
+}
+
+.mini-cart h2,
+.mini-cart .price {
+  font-size: 16px;
+}
+
+.mini-cart button {
+  height: 24px;
+  width: 24px;
+  font-size: 20px;
+}
+
+.mini-cart .options button {
+  height: 24px;
+  width: 24px;
+  font-size: 10px;
+  overflow: hidden;
+}
+
+.mini-cart .slider {
+  height: 137px;
+  width: 105px;
+}
+
+.mini-cart .arrows {
+  display: none;
+}
+
+.mini-cart .item-left {
+  max-height: 200px;
+  width: 150px;
+}
+
+.btn button {
+  width: 140px;
+  height: 43px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #1d1f22;
+  background-color: #fff;
+  border: 1px solid;
+}
+
+.btn-green button {
+  background-color: #5ece7b;
+  color: #fff;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.total-amount {
+  margin: 42px 0px 37px 0px;
+  display: flex;
+  justify-content: space-between;
+}
