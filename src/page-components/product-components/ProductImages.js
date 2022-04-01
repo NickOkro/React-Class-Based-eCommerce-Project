@@ -20,7 +20,7 @@ export default class ProductImages extends Component {
                 })}
             </ul>
             <div className='main-image'>
-                <img src={this.state.selectedImage === '' ? gallery && gallery[0] : this.state.selectedImage} alt="main-image" />
+                <img src={this.state.selectedImage === '' ? gallery && gallery[0] : this.state.selectedImage} alt="product" />
             </div>
         </>
     )}

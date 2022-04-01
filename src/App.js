@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import CategoryPage from './pages/CategoryPage'
-// import GetCategoryNames from './Graphql/GetCategoryNames'
 import getCategoryNames from './Graphql/GetCategoryNames'
 import {UserProvider} from './context'
-import {Route, Switch} from 'react-router'
-import { BrowserRouter} from 'react-router-dom';
+import { BrowserRouter, Route, Switch} from 'react-router-dom';
 import ProductPage from './pages/ProductPage'
 import CartPage from './pages/CartPage'
 import getCurrencies from './Graphql/GetCurrencies'
+import Header from './page-components/Header'
+import getProductsByCategory from './Graphql/GetProductsByCategory'
+import ScrollToTop from './page-components/ScrollToTop';
 
 export default class App extends Component {
 
@@ -25,22 +26,40 @@ export default class App extends Component {
       totalAmount: 0,
       totalProductsAmount: 0,
       currencies: 0,
+      categoryProducts: '',
     }
 
     this.updateCurrency = this.updateCurrency.bind(this)
     this.toggleCurrencySwitch = this.toggleCurrencySwitch.bind(this)
     this.addProductToCart = this.addProductToCart.bind(this)
     this.changeProductAmount = this.changeProductAmount.bind(this)
+    this.setCategory = this.setCategory.bind(this)
+  }
+
+  async setCategory(name){
+    await this.setState({
+       selectedCategory: name
+    })
+    const result = await getProductsByCategory(this.state.selectedCategory)
+      
+    this.setState({
+     categoryProducts: result.category.products
+    });
   }
 
   async componentDidMount() {
     const category = await getCategoryNames()
     const currency = await getCurrencies() 
       
+    const result = await getProductsByCategory('all')
+
     this.setState({
      categoriesList: category.categories,
      currencies: currency.currencies,
+     categoryProducts: result.category.products,
     });
+
+
   }
 
   componentDidUpdate(prevProps,prevState){
@@ -50,9 +69,19 @@ export default class App extends Component {
       let totalPrice = 0
       totalPrice = this.state.cartProducts.map(product => 
         product.prices.find(each=> each.currency.label === this.state.currentCurrency).amount * product.amount).map(price=> totalPrice += price)
-      this.setState({  
-        totalAmount: totalPrice[totalPrice.length -1] && totalPrice[totalPrice.length -1].toFixed(2)
-      })
+        if(totalPrice[totalPrice.length -1]){
+          this.setState({  
+          totalAmount: totalPrice[totalPrice.length -1].toFixed(2),
+          popupShown: false
+          })
+        }
+        else {
+          this.setState({  
+          totalAmount: 0,
+          popupShown: false
+          })
+        }
+      
     }
   }
 
@@ -77,8 +106,19 @@ export default class App extends Component {
   }
 
   addProductToCart(product){
-    if(product.attributes.length === product.options.length || product.attributes.length === 0){
-      if(this.state.cartProducts.find(prod => prod.id === product.id)){
+    let allSelected = true
+    for (let attr of product.attributes){
+      if(attr.selected === undefined){
+        allSelected = false
+      }
+    }
+    if(allSelected){
+
+      const productID = product.id + product.attributes.map(attr=> attr.selected)
+      if(this.state.cartProducts.find(prod=>{
+        const prodID = prod.id + prod.attributes.map(attr=> attr.selected)
+        return productID === prodID
+      })){
         this.changeProductAmount(product, true)
       }
       else {
@@ -87,37 +127,51 @@ export default class App extends Component {
           popupShown: false,
         })
       }
-    } 
-    else {
+    }
+    else
+    {
       this.setState({
         popupShown: true
       })
     }
-    
   }
 
-  changeProductAmount(prod, op){
-    if(op){
-      this.state.cartProducts.find(product => product.id === prod.id).amount += 1
+  changeProductAmount(product, op){
+    const productID = product.id + product.attributes.map(attr=> attr.selected)
+    const changableProduct = this.state.cartProducts.find(prod=>{
+      const prodID = prod.id + prod.attributes.map(attr=> attr.selected)
+      return productID === prodID
+    })
+    if(op)
+    {
+      changableProduct.amount += 1
       this.setState({
-        cartProducts: this.state.cartProducts
-      })
+        cartProducts: this.state.cartProducts,
+        popupShown: false,
+        totalProductsAmount: this.state.totalProductsAmount + 1
+      }, console.log(this.state.totalProductsAmount))
     }
-    else {
-      if(this.state.cartProducts.find(product => product.id === prod.id).amount <= 1){
+    else 
+    {
+      if(changableProduct.amount <= 1)
+      {
         this.setState({
-          cartProducts: this.state.cartProducts.filter(product => product.id !== prod.id)
+          cartProducts: this.state.cartProducts.filter(prod => {
+            const prodID = prod.id + prod.attributes.map(attr=> attr.selected)
+            return productID !== prodID
+          }),
+          totalProductsAmount: this.state.totalProductsAmount - 1
         })
-      } else {
-        this.state.cartProducts.find(product => product.id === prod.id).amount -= 1
+      }
+      else 
+      {
+        changableProduct.amount -= 1
         this.setState({
-          cartProducts: this.state.cartProducts
+          cartProducts: this.state.cartProducts,
+          totalProductsAmount: this.state.totalProductsAmount - 1
         })
       }
     }
-    this.setState({
-      totalProductsAmount: this.state.cartProducts.map(product=> this.state.totalProductsAmount = this.state.totalProductsAmount + product.amount),
-    })
   }
 
   
@@ -140,15 +194,20 @@ export default class App extends Component {
       }}>
         <>
         <BrowserRouter>
+        <ScrollToTop />
+        <Header selectedCategory={this.state.selectedCategory} setCategory={this.setCategory}/>
           <Switch>
-            <Route exact path="/">
-              <CategoryPage />
-            </Route>
-            <Route path="/product/:id">
-              {({match}) => <ProductPage match={match} popupShown={this.state.popupShown}/>}
-            </Route>
             <Route exact path="/cart">
               <CartPage />
+            </Route>
+            <Route exact path="/:category_name">
+              {({match}) => <CategoryPage selectedCategory={this.state.selectedCategory} categoryProducts={this.state.categoryProducts} match={match}/>}
+            </Route>
+            <Route exact path="/product/:id">
+              {({match}) => <ProductPage match={match} popupShown={this.state.popupShown}/>}
+            </Route>
+            <Route exact path="/">
+              {({match}) => <CategoryPage selectedCategory={this.state.selectedCategory} categoryProducts={this.state.categoryProducts} match={match}/>}
             </Route>
           </Switch>
       </BrowserRouter>

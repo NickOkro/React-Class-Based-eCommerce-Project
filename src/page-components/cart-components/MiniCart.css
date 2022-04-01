@@ -6,12 +6,12 @@
   max-height: 540px;
   background-color: #fff;
   padding: 20px;
-  z-index: 2;
+  z-index: 3;
 }
 
 .mini-cart-items {
   max-height: 340px;
-  overflow: scroll;
+  overflow: hidden;
 }
 
 .mini-cart .cart-title {
@@ -38,10 +38,10 @@
 }
 
 .mini-cart .options button {
+  overflow: hidden;
   height: 24px;
   width: 24px;
   font-size: 10px;
-  overflow: hidden;
 }
 
 .mini-cart .slider {
@@ -54,7 +54,6 @@
 }
 
 .mini-cart .item-left {
-  max-height: 200px;
   width: 150px;
 }
 

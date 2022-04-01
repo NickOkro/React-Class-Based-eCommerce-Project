@@ -3,11 +3,6 @@ import { UserConsumer } from '../../context'
 
 export default class ItemAmount extends Component {
 
-    constructor(props){
-        super(props)
-
-    }
-
   render() {
     return (
         <UserConsumer>

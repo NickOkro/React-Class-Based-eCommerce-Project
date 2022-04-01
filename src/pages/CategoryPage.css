@@ -15,13 +15,12 @@
   padding: 0px 15px 30px 15px;
   margin: 73px 20px 0px 20px;
   cursor: pointer;
+}
+
+.product-card .link {
   text-decoration: none;
   color: #1d1f22;
 }
-
-/* .product-card:hover {
-  box-shadow: 0 0 10px rgb(173, 173, 173);
-} */
 
 .img-holder {
   display: flex;
@@ -33,11 +32,8 @@
 }
 
 .product-img {
-  width: 100%;
+  height: 100%;
   transition: 0.3s;
-}
-.product-img:hover {
-  width: 105%;
 }
 
 .product-name {
@@ -64,7 +60,9 @@
 }
 
 .plp-cart-icon {
-  margin-left: -100px;
-  margin-bottom: -310px;
+  position: absolute;
+  z-index: 1;
   cursor: pointer;
+  margin-top: -105px;
+  margin-left: 275px;
 }

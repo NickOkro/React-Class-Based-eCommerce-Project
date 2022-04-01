@@ -6,7 +6,7 @@ const getProductsByCategory = async (category) => {
  
     const queryProductsByCategory = new Query("category", true).addArgument('input', 'CategoryInput', { title : category})
     .addField(new Field("products", true)
-    .addFieldList(["id", "name", "attributes{id}", "inStock", "gallery", "prices{amount, currency{symbol, label}}"])) 
+    .addFieldList(["id", "name", "attributes{id,name,type,items{id}}", "inStock", "gallery", "prices{amount, currency{symbol, label}}","brand"])) 
 
     return await client.post(queryProductsByCategory)
   }

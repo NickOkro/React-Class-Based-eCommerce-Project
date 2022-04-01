@@ -1,4 +1,4 @@
-import { client, Query, Field} from "@tilework/opus";
+import { client, Query} from "@tilework/opus";
 
 const getCurrencies = async () => {
 

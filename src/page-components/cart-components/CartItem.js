@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import AttrOptions from '../product-components/AttrOptions'
 import { UserConsumer } from '../../context'
 import './CartItem.css'
 import Slider from './Slider'
 import ItemAmount from './ItemAmount'
+import CartAttributs from './cartAttributes'
 
 
 export default class CartItem extends Component {
@@ -14,36 +14,10 @@ export default class CartItem extends Component {
         this.state ={
             options: this.props.product.options,
         }
-
-        // this.changeAmount = this.changeAmount.bind(this)
-        this.changeOption = this.changeOption.bind(this)
-    }
-
-    // changeAmount(operator){
-    //     operator
-    //     ? this.setState((prevState)=>({
-    //         amount: Number(prevState.amount) + 1
-    //     }))
-    //     : this.setState({
-    //         amount: this.state.amount - 1
-    //     })
-    // }
-
-    changeOption(opt, optName){
-        if(this.state.options.find(item => item.optionName===optName)){
-          this.state.options.find(item => item.optionName===optName).option = opt
-          this.setState({
-            options: [...this.state.options]
-        })
-        } else {
-          this.setState({
-            options: [...this.state.options, {optionName: optName,option:opt}]
-        })
-        }
     }
 
   render() {
-    const {id,name, brand, attributes, prices, gallery} = this.props.product
+    const {name, brand, attributes, prices, gallery} = this.props.product
     return (
       <UserConsumer>
           {value=>{
@@ -59,7 +33,7 @@ export default class CartItem extends Component {
                             return(
                             <div className='attr_cart' key={attr.id}>
                                 <h4>{attr.name}: </h4>
-                                <AttrOptions options={this.props.product.options} selectOption={this.changeOption} attr={attr} />
+                                <CartAttributs options={this.props.product.attributes} attr={attr} />
                             </div>
                             )
                         })}

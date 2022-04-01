@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import AttrOptions from './AttrOptions'
 import { UserConsumer } from '../../context'
 import Warning from './Warning'
+import DOMPurify from "dompurify";
 
 export default class ProductDesc extends Component {
 
@@ -10,6 +11,7 @@ export default class ProductDesc extends Component {
 
         this.state ={
             options: [],
+            desc: '',
         }
 
         this.selectOption = this.selectOption.bind(this)
@@ -30,8 +32,20 @@ export default class ProductDesc extends Component {
 
   render() {
     const {name, brand, attributes, inStock, prices, description} = this.props.product
+    let productAttributes = []
     let productWithOptions = this.props.product;
-    productWithOptions = {...productWithOptions, options:this.state.options, amount:1}
+    productWithOptions = {...productWithOptions, amount: 1}
+    productWithOptions.attributes && productWithOptions.attributes.map(attr=> {
+      attr = {...attr, selected: this.state.options.find(opt=> opt.optionName === attr.id) && this.state.options.find(opt=> opt.optionName === attr.id).option}
+      productAttributes = [...productAttributes, attr]
+      return productAttributes
+    })
+    productWithOptions.attributes = productAttributes
+
+
+    const cleanHTML = DOMPurify.sanitize(description, {
+      USE_PROFILES: { html: true },
+    });
     return (
       <UserConsumer>
           {value=>{
@@ -60,8 +74,8 @@ export default class ProductDesc extends Component {
                     }} className='add-to-cart-btn'>add to cart</button>
                     :
                     <button className='add-to-cart-btn out-of-stock-btn'>out of stock</button>
-                    }
-                    <p className='desc' dangerouslySetInnerHTML={{ __html: description }} />
+                  }
+                  <div dangerouslySetInnerHTML={{ __html: cleanHTML }}/>
                 </div>
             )}}
     </UserConsumer>

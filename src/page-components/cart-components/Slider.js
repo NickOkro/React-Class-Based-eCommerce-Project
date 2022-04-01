@@ -42,12 +42,12 @@ export default class Slider extends Component {
     <div className='slider'>
         <div className='slider-content' style={{left:this.state.sliderPos}}>
             {this.props.gallery && this.props.gallery.map(img=>{
-                return <img key={img} src={img} className='slider-img'/>
+                return <img key={img} src={img} className='slider-img' alt={img}/>
             })}
         </div>
         <div className='arrows'>
-                <img onClick={() => this.moveLeft(this.state.imgWidth)} className='arrow' src={arrowLeft}/>
-                <img onClick={() => this.moveRight(this.state.imgWidth)} className='arrow' src={arrowRight} />
+                <img onClick={() => this.moveLeft(this.state.imgWidth)} className='arrow' src={arrowLeft} alt='arrow-left'/>
+                <img onClick={() => this.moveRight(this.state.imgWidth)} className='arrow' src={arrowRight} alt='arrow-right'/>
         </div>
     </div>
     )

@@ -38,7 +38,7 @@ export default class MiniCart extends Component {
             <h2 className='bold cart-title'>My Bag,<span>{value.cartProducts.length} item</span></h2>
             <div className='mini-cart-items'>
               {value.cartProducts.map(product=>{
-                return <CartItem key={product.id} product={product}/>
+                return <CartItem key={product.id + product.attributes.map(attr=> attr.selected)} product={product}/>
               })}
             </div>
             <div className='total-amount'>
@@ -46,7 +46,7 @@ export default class MiniCart extends Component {
               <p className='price'>{value.currentCurrencySymbol}{value.totalAmount}</p>
             </div>
             <div className='buttons'>
-              <Link className="btn" to="/cart"><button>View Bag</button></Link>
+              <Link onClick={() => this.props.toggleBoxShown(false, 'cart')} className="btn" to="/cart"><button>View Bag</button></Link>
               <Link className="btn btn-green" to="/check-out"><button>check out</button></Link>
             </div>
           </div>

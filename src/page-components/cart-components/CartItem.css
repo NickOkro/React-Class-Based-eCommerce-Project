@@ -3,8 +3,6 @@
 }
 
 .item-left {
-  overflow: scroll;
-  max-height: 205px;
   width: 350px;
 }
 

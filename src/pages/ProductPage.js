@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import getProductById from '../Graphql/GetProductById'
-import Header from '../page-components/Header'
 import './ProductPage.css'
 import ProductDesc from '../page-components/product-components/ProductDesc'
 import ProductImages from '../page-components/product-components/ProductImages'
@@ -25,7 +24,6 @@ export default class ProductPage extends Component {
   render() {
     return (
     <>
-      <Header/>
       <section className='product-page'>
         <div className='container'>
           <div className='product-content'>

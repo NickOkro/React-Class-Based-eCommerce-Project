@@ -44,9 +44,9 @@ export default class Header extends Component {
                         {this.props.selectedCategory && value.categoriesList.map(category=>{
                           return this.props.selectedCategory === category.name 
                           ?
-                          <Link key={category.name} className='link' to="/"><li className='selected-category'>{category.name}</li></Link> 
+                          <Link key={category.name} className='link' to={`/${category.name}`}><li className='selected-category'>{category.name}</li></Link> 
                           :
-                          <Link key={category.name} className='link' to="/" onClick={() => 
+                          <Link key={category.name} className='link' to={`/${category.name}`} onClick={() => 
                             {this.props.setCategory ? 
                               this.props.setCategory(category.name) : 
                               this.props.selectedCategory = category.name}}>
@@ -59,7 +59,7 @@ export default class Header extends Component {
                       <ul>
                           <li onClick={() => value.toggleCurrencySwitch()}>
                             {value.currencies && value.currencies.find(currency=>currency.label === value.currentCurrency).symbol}
-                            <img src={arrowSvg} />
+                            <img src={arrowSvg} alt="currency-arrow"/>
                           </li>
                           <li onClick={() => this.setState({cartShown: !this.state.cartShown})}>
                             <img src={emptyCartSvg} alt="empty cart" />
