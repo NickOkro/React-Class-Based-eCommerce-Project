@@ -22,7 +22,6 @@ export default class App extends Component {
       currencySwitcherShown: false,
       selectedCategory: 'all',
       cartProducts: [],
-      popupShown: false,
       totalAmount: 0,
       totalProductsAmount: 0,
       currencies: 0,
@@ -106,14 +105,6 @@ export default class App extends Component {
   }
 
   addProductToCart(product){
-    let allSelected = true
-    for (let attr of product.attributes){
-      if(attr.selected === undefined){
-        allSelected = false
-      }
-    }
-    if(allSelected){
-
       const productID = product.id + product.attributes.map(attr=> attr.selected)
       if(this.state.cartProducts.find(prod=>{
         const prodID = prod.id + prod.attributes.map(attr=> attr.selected)
@@ -127,13 +118,6 @@ export default class App extends Component {
           popupShown: false,
         })
       }
-    }
-    else
-    {
-      this.setState({
-        popupShown: true
-      })
-    }
   }
 
   changeProductAmount(product, op){
@@ -149,7 +133,7 @@ export default class App extends Component {
         cartProducts: this.state.cartProducts,
         popupShown: false,
         totalProductsAmount: this.state.totalProductsAmount + 1
-      }, console.log(this.state.totalProductsAmount))
+      })
     }
     else 
     {
@@ -204,7 +188,7 @@ export default class App extends Component {
               {({match}) => <CategoryPage selectedCategory={this.state.selectedCategory} categoryProducts={this.state.categoryProducts} match={match}/>}
             </Route>
             <Route exact path="/product/:id">
-              {({match}) => <ProductPage match={match} popupShown={this.state.popupShown}/>}
+              {({match}) => <ProductPage match={match}/>}
             </Route>
             <Route exact path="/">
               {({match}) => <CategoryPage selectedCategory={this.state.selectedCategory} categoryProducts={this.state.categoryProducts} match={match}/>}

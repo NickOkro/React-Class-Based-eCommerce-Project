@@ -12,6 +12,7 @@ export default class ProductDesc extends Component {
         this.state ={
             options: [],
             desc: '',
+            warningShown: false,
         }
 
         this.selectOption = this.selectOption.bind(this)
@@ -65,14 +66,32 @@ export default class ProductDesc extends Component {
                     })}
                     <h4>price</h4>
                     <h3 className='price'>{`${symbol} ${amount}`}</h3>
-                    {this.props.popupShown && <Warning />}
+                    {this.state.warningShown && <div className='warning'>
+          * Please select options first
+      </div>}
                     {inStock
                     ?
                     <button onClick={() => {
-                      value.addProductToCart(productWithOptions)
-                      this.setState({options: []})
-                    }} className='add-to-cart-btn'>add to cart</button>
-                    :
+                      let allSelected = true
+                      for (let attr of productWithOptions.attributes){
+                        if(attr.selected === undefined){
+                          allSelected = false
+                        }
+                      }
+                      if(allSelected){
+                        value.addProductToCart(productWithOptions)
+                        this.setState({
+                          options: [],
+                          warningShown: false
+                        })
+                      } else {
+                        this.setState({
+                          warningShown: true
+                        })
+                      }
+                    }} 
+                    className='add-to-cart-btn'>add to cart</button>
+                      :
                     <button className='add-to-cart-btn out-of-stock-btn'>out of stock</button>
                   }
                   {descElement}

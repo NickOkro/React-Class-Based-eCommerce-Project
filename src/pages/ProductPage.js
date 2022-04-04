@@ -28,7 +28,7 @@ export default class ProductPage extends Component {
         <div className='container'>
           <div className='product-content'>
             <ProductImages product={this.state.product}/>
-            <ProductDesc product={this.state.product} popupShown={this.props.popupShown}/>
+            <ProductDesc product={this.state.product}/>
           </div>
         </div>
       </section>
