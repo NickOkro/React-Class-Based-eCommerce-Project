@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import AttrOptions from './AttrOptions'
 import { UserConsumer } from '../../context'
-import Warning from './Warning'
 import {Parser as HtmlToReactParser} from 'html-to-react'
 
 export default class ProductDesc extends Component {
