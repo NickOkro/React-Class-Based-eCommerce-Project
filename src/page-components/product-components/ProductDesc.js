@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import AttrOptions from './AttrOptions'
 import { UserConsumer } from '../../context'
 import Warning from './Warning'
-import DOMPurify from "dompurify";
+import {Parser as HtmlToReactParser} from 'html-to-react'
 
 export default class ProductDesc extends Component {
 
@@ -42,10 +42,10 @@ export default class ProductDesc extends Component {
     })
     productWithOptions.attributes = productAttributes
 
+    //parse
+    const htmlToReactParser = new HtmlToReactParser();
+    const descElement = htmlToReactParser.parse(description);
 
-    const cleanHTML = DOMPurify.sanitize(description, {
-      USE_PROFILES: { html: true },
-    });
     return (
       <UserConsumer>
           {value=>{
@@ -75,7 +75,7 @@ export default class ProductDesc extends Component {
                     :
                     <button className='add-to-cart-btn out-of-stock-btn'>out of stock</button>
                   }
-                  <div dangerouslySetInnerHTML={{ __html: cleanHTML }}/>
+                  {descElement}
                 </div>
             )}}
     </UserConsumer>
